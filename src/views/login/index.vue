@@ -61,18 +61,25 @@ export default {
   },
   methods: {
     login () {
-      this.$refs['loginForm'].validate(valid => {
+      this.$refs['loginForm'].validate(async valid => {
         if (valid) {
-          this.$http
-            .post('authorizations', this.loginform)
-            .then(res => {
-              // 保存用户信息
-              local.setUser(res.data.data)
-              this.$router.push('/')
-            })
-            .catch(() => {
-              this.$message.error('手机号或验证码错误')
-            })
+          // this.$http
+          //   .post('authorizations', this.loginform)
+          //   .then(res => {
+          //     // 保存用户信息
+          //     local.setUser(res.data.data)
+          //     this.$router.push('/')
+          //   })
+          //   .catch(() => {
+          //     this.$message.error('手机号或验证码错误')
+          //   })
+          try {
+            const { data: { data } } = await this.$http.post('authorizations', this.loginform)
+            local.setUser(data)
+            this.$router.push('/')
+          } catch (e) {
+            this.$message.error('手机号或验证码错误')
+          }
         }
       })
     }
@@ -80,7 +87,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped lang='less'>
 .containner {
   width: 100%;
   height: 100%;
@@ -88,15 +95,16 @@ export default {
   position: absolute;
   left: 0;
   top: 0;
+  .el-card {
+    width: 400px;
+    height: 370px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 }
-.el-card {
-  width: 400px;
-  height: 370px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
+
 img {
   display: block;
   margin: 0 auto 30px;

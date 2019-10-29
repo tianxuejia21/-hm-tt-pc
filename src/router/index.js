@@ -11,25 +11,35 @@ import Welcome from '@/views/welcome'
 import Notfound from '@/views/404'
 
 import local from '@/utils/local.js'
+
+import article from '@/views/article'
+
 Vue.use(VueRouter)
 
 const router = new VueRouter({
-  routes: [{
-    path: '/login',
-    component: Login
-  },
-  {
-    path: '/',
-    component: Home,
-    children: [{
+  routes: [
+    {
+      path: '/login',
+      component: Login
+    },
+    {
       path: '/',
-      component: Welcome
-    }]
-  },
-  {
-    path: '*',
-    component: Notfound
-  }
+      component: Home,
+      children: [
+        {
+          path: '/',
+          component: Welcome
+        },
+        {
+          path: '/article',
+          component: article
+        }
+      ]
+    },
+    {
+      path: '*',
+      component: Notfound
+    }
   ]
 })
 router.beforeEach((to, from, next) => {
