@@ -10,6 +10,7 @@ import Welcome from '@/views/welcome'
 
 import Notfound from '@/views/404'
 
+import local from '@/utils/local.js'
 Vue.use(VueRouter)
 
 const router = new VueRouter({
@@ -30,5 +31,18 @@ const router = new VueRouter({
     component: Notfound
   }
   ]
+})
+router.beforeEach((to, from, next) => {
+  const user = local.getUser()
+  // 如果登录
+  if (user && user.token) {
+    next()
+  } else {
+    if (to.path === '/login') {
+      next()
+    } else {
+      next('/login')
+    }
+  }
 })
 export default router

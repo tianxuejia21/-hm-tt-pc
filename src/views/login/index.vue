@@ -1,24 +1,30 @@
 <template>
   <div class="containner">
     <el-card>
-      <img src="../../assets/logo_index.png" width="200px" />
-      <el-form ref="loginForm" :model="loginform" :rules="rulesLogin" status-icon>
-        <el-form-item prop="moblie">
-          <el-input v-model="loginform.mobile" placeholder="请输入手机号"></el-input>
+      <img src="../../assets/logo_index.png"
+           width="200px" />
+      <el-form ref="loginForm"
+               :model="loginform"
+               :rules="rulesLogin"
+               status-icon>
+        <el-form-item prop="mobile">
+          <el-input v-model="loginform.mobile"
+                    placeholder="请输入手机号"></el-input>
         </el-form-item>
-        <el-form-item prop="code" status-icon>
-          <el-input
-            v-model="loginform.code"
-            placeholder="请输入验证码"
-            style="width:235px;margin-right:10px"
-          ></el-input>
+        <el-form-item prop="code"
+                      status-icon>
+          <el-input v-model="loginform.code"
+                    placeholder="请输入验证码"
+                    style="width:235px;margin-right:10px"></el-input>
           <el-button>发送验证码</el-button>
         </el-form-item>
         <el-form-item>
           <el-checkbox :value="true">我已阅读并同意协议和隐私条款</el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" style="width:100%" @click="login">立即登录</el-button>
+          <el-button type="primary"
+                     style="width:100%"
+                     @click="login">立即登录</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -26,6 +32,7 @@
 </template>
 
 <script>
+import local from '@/utils/local'
 export default {
   data () {
     const checkMoblie = (rule, value, callback) => {
@@ -59,6 +66,8 @@ export default {
           this.$http
             .post('authorizations', this.loginform)
             .then(res => {
+              // 保存用户信息
+              local.setUser(res.data.data)
               this.$router.push('/')
             })
             .catch(() => {
