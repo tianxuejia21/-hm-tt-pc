@@ -4,7 +4,17 @@ import local from '@/utils/local'
 
 import router from '@/router'
 
+import Jsonbig from 'json-bigint'
+
 axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0'
+
+axios.defaults.transformResponse = [(data) => {
+  try {
+    return Jsonbig.parse(data)
+  } catch (e) {
+    return data
+  }
+}]
 
 axios.interceptors.request.use((config) => {
   const user = local.getUser() || {}
