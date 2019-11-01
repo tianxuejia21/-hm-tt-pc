@@ -21,7 +21,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label='频道'>
-          <el-select v-model="reqParams.chanel_id"
+          <!-- <el-select v-model="reqParams.chanel_id"
                      placeholder="请选择"
                      clearable>
             <el-option v-for="item in channelOptions"
@@ -29,7 +29,8 @@
                        :label="item.name"
                        :value="item.id">
             </el-option>
-          </el-select>
+          </el-select> -->
+          <my-channel v-model="reqParams.channel_id"></my-channel>
         </el-form-item>
         <el-form-item label='日期'>
           <el-date-picker v-model="dataArr"
@@ -135,22 +136,22 @@ export default {
     }
   },
   created () {
-    this.getchannelOptions()
+    // this.getchannelOptions()
     this.getarticles()
   },
   methods: {
     // 频道渲染
-    async getchannelOptions () {
-      const { data: { data } } = await this.$http.get('channels')
-      this.channelOptions = data.channels
-    },
+    // async getchannelOptions () {
+    //   const { data: { data } } = await this.$http.get('channels')
+    //   this.channelOptions = data.channels
+    // },
     // 文章渲染
     async getarticles () {
       const { data: { data } } = await this.$http.get('articles', { params: this.reqParams })
       this.articles = data.results
       this.total = data.total_count
     },
-    // 默认传参
+    // 默认传参分页渲染
     pager (newpage) {
       this.reqParams.page = newpage
       this.getarticles()

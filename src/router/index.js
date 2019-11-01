@@ -14,6 +14,8 @@ import local from '@/utils/local.js'
 
 import article from '@/views/article'
 
+import image from '@/views/image'
+
 Vue.use(VueRouter)
 
 const router = new VueRouter({
@@ -33,6 +35,10 @@ const router = new VueRouter({
         {
           path: '/article',
           component: article
+        },
+        {
+          path: '/photo',
+          component: image
         }
       ]
     },
