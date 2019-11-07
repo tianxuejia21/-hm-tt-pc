@@ -17,7 +17,7 @@
         <el-button style='float:right'
                    type="success"
                    size='small'
-                   @click='dialogVisible=true'>添加素材</el-button>
+                   @click='open'>添加素材</el-button>
         <!-- 素材列表 -->
         <div class="img_list">
           <div class="img_item"
@@ -47,8 +47,11 @@
                  :visible.sync="dialogVisible"
                  width="300px">
         <el-upload class="avatar-uploader"
-                   action="https://jsonplaceholder.typicode.com/posts/"
-                   :show-file-list="false">
+                   action="http://ttapi.research.itcast.cn/mp/v1_0/user/images"
+                   name='image'
+                   :headers='headers'
+                   :show-file-list="false"
+                   :on-success='uploadSuccess'>
           <img v-if="imageUrl"
                :src="imageUrl"
                class="avatar" />
@@ -61,6 +64,7 @@
 </template>
 
 <script>
+import local from '@/utils/local'
 export default {
   data () {
     return {
@@ -77,7 +81,11 @@ export default {
       // 对话框显示隐藏
       dialogVisible: false,
       // 上传成功后的图片地址
-      imageUrl: null
+      imageUrl: null,
+      // 上传的请求头
+      headers: {
+        Authorization: `Bearer ${local.getUser().token}`
+      }
 
     }
   },
@@ -93,7 +101,7 @@ export default {
     },
     // 分页
     pager (newpage) {
-      this.reqParams.page = this.newpage
+      this.reqParams.page = newpage
       this.getImages()
     },
     // 切换列表
@@ -120,9 +128,22 @@ export default {
       }).catch(() => {
 
       })
+    },
+    // 图片上传成功
+    uploadSuccess (res) {
+      this.imageUrl = res.data.url
+      this.$message.success('图片上传成功')
+      window.setTimeout(() => {
+        this.dialogVisible = false
+        this.getImages()
+      }, 2000)
+    },
+    // 点开图片为空
+    open () {
+      this.dialogVisible = true
+      this.imageUrl = null
     }
   }
-
 }
 </script>
 

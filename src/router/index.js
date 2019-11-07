@@ -16,36 +16,58 @@ import article from '@/views/article'
 
 import image from '@/views/image'
 
+import publish from '@/views/publish'
+
+import comment from '@/views/comment'
+
+import setting from '@/views/setting'
+
+import fans from '@/views/fans'
+
 Vue.use(VueRouter)
 
 const router = new VueRouter({
-  routes: [
-    {
-      path: '/login',
-      component: Login
-    },
-    {
+  routes: [{
+    path: '/login',
+    component: Login
+  },
+  {
+    path: '/',
+    component: Home,
+    children: [{
       path: '/',
-      component: Home,
-      children: [
-        {
-          path: '/',
-          component: Welcome
-        },
-        {
-          path: '/article',
-          component: article
-        },
-        {
-          path: '/photo',
-          component: image
-        }
-      ]
+      component: Welcome
     },
     {
-      path: '*',
-      component: Notfound
+      path: '/article',
+      component: article
+    },
+    {
+      path: '/photo',
+      component: image
+    },
+    {
+      path: '/publish',
+      component: publish
+    },
+    {
+      path: '/comment',
+      component: comment
+    },
+    {
+      path: '/setting',
+      component: setting
+    },
+    {
+      path: '/fans',
+      component: fans
     }
+    ]
+  },
+  {
+    path: '*',
+    component: Notfound
+  }
   ]
 })
 router.beforeEach((to, from, next) => {
